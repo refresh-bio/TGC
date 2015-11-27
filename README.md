@@ -14,6 +14,7 @@ cd ..
 ./run -abcdefgijklcd tgc
 ```
 
+
 ###TGC—What is it?
 
 Thousands Genome Compressor is a tool to estimate the boundaries of compression ratio for human genome compression. It can be also used as a very effective tool for compression Variant Call Format (VCF) files.
