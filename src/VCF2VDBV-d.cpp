@@ -647,7 +647,7 @@ int main (int argc, char * const argv[]) {
                                         endPos[t][temp_int-4] =  info[t][temp_int];
                                         temp_int++;
                                     }
-                                    endPos[j-4]='\0';
+                                    endPos[t][temp_int-4]='\0';
                                 }
                                 else
                                 {
