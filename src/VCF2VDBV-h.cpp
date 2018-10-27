@@ -54,6 +54,7 @@ void writeBits(char * filename, unsigned char * buf, int &bufPos, unsigned char 
             printf("The error is - %s\n", strerror(errno));
             exit(8);
         }
+        fwrite(buf, 1, BUFFER_SIZE, file);
         fclose(file);
 
         clearBuffer(buf, bufPos, BUFFER_SIZE);
@@ -78,6 +79,7 @@ void writeBits(char * filename, unsigned char * buf, int &bufPos, unsigned char 
                 printf("The error is - %s\n", strerror(errno));
                 exit(8);
             }
+            fwrite(buf, 1, BUFFER_SIZE, file);
             fclose(file);
 
             clearBuffer(buf, bufPos, BUFFER_SIZE);
