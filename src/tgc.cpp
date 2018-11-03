@@ -71,7 +71,7 @@
 
 using namespace std;
 
-//typedef int file_id_t;  //ip to INT_MAX input BV files
+//typedef int file_id_t;  //up to INT_MAX input BV files
 typedef short file_id_t; //up to SHRT_MAX input BV files
 
 bool compress_mode;
@@ -297,7 +297,7 @@ inline pair<int, int> find_match(unsigned char *p, int pos, int ver)
 		return make_pair(-1, -1);
 		
 	unsigned long h = hash_fun(p, pos_norm, ver);
-	unsigned long long off = (pos_norm / hash_step) << (ht_slot_size_exp);
+	unsigned long long off = ((unsigned long long)pos_norm / hash_step) << (ht_slot_size_exp);
 	file_id_t *ht;
 	
 	if(ver == 1)
@@ -388,7 +388,7 @@ void prepare_ht(void)
 	ht_size1          = ht_slot_size * ht_slots1;
 	ht_size2          = ht_slot_size * ht_slots2;
 	
-	cout << "HT sizes: " << ht_size1 / (1<<20)*sizeof(short) + ht_size2 / (1<<20)*sizeof(short) << "MB\n";
+	cout << "HT sizes: " << ht_size1 / (1<<20)*sizeof(file_id_t) + ht_size2 / (1<<20)*sizeof(file_id_t) << "MB\n";
 
 	ht1 = new file_id_t[ht_size1];
 	fill(ht1, ht1+ht_size1, -1);
