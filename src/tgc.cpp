@@ -71,8 +71,8 @@
 
 using namespace std;
 
-//typedef int file_id_t;
-typedef short file_id_t;
+//typedef int file_id_t;  //ip to INT_MAX input BV files
+typedef short file_id_t; //up to SHRT_MAX input BV files
 
 bool compress_mode;
 
@@ -298,7 +298,7 @@ inline pair<int, int> find_match(unsigned char *p, int pos, int ver)
 		
 	unsigned long h = hash_fun(p, pos_norm, ver);
 	unsigned long long off = (pos_norm / hash_step) << (ht_slot_size_exp);
-	short *ht;
+	file_id_t *ht;
 	
 	if(ver == 1)
 		ht = ht1;
@@ -345,7 +345,7 @@ void insert_into_ht(file_id_t file_id, unsigned char *p, int ver)
 	unsigned long long off = 0;
 	
 	int hash_len, hash_step;
-	short *ht, *ht_zeros;
+	file_id_t *ht, *ht_zeros;
 	
 	if(ver == 1)
 	{
