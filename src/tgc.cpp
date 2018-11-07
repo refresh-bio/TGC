@@ -72,7 +72,9 @@
 using namespace std;
 
 //typedef int file_id_t;  //up to INT_MAX input BV files
-typedef short file_id_t; //up to SHRT_MAX input BV files
+typedef unsigned short file_id_t; //up to USHRT_MAX-1 input BV files
+#define EMPTY USHRT_MAX
+
 
 bool compress_mode;
 
@@ -276,7 +278,7 @@ inline unsigned long hash_fun(unsigned char *p, int pos, int ver)
 // ***************************************************************
 inline pair<int, int> find_match(unsigned char *p, int pos, int ver)
 {
-	int best_id  = -1;
+	int best_id  = EMPTY;
 	int best_len = 0;
 	int hash_step, hash_len;
 	
@@ -294,7 +296,7 @@ inline pair<int, int> find_match(unsigned char *p, int pos, int ver)
 	int pos_norm = (pos + hash_step - 1) / hash_step * hash_step;
 	
 	if(pos_norm + hash_len > file_size)
-		return make_pair(-1, -1);
+		return make_pair(EMPTY, -1);
 		
 	unsigned long h = hash_fun(p, pos_norm, ver);
 	unsigned long long off = ((unsigned long long)pos_norm / hash_step) << (ht_slot_size_exp);
@@ -305,7 +307,7 @@ inline pair<int, int> find_match(unsigned char *p, int pos, int ver)
 	else
 		ht = ht2;
 	
-	while(ht[off+h] != -1)
+	while(ht[off+h] != EMPTY)
 	{
 		int file_id = ht[off+h];
 		int i;
@@ -333,7 +335,7 @@ inline pair<int, int> find_match(unsigned char *p, int pos, int ver)
 	}
 	
 	if(best_len < MIN_MATCH_LEN)
-		return make_pair(-1, -1);
+		return make_pair(EMPTY, -1);
 		
 	return make_pair(best_id, best_len);
 }
@@ -369,7 +371,7 @@ void insert_into_ht(file_id_t file_id, unsigned char *p, int ver)
 		if(h <= ht_zeros[n_slot])		// insert counter of entries with hash_value = 0
 			h = ht_zeros[n_slot]++;
 	
-		while(ht[off+h] != -1)
+		while(ht[off+h] != EMPTY)
 			h = (h+1) & ht_slot_size_mask;
 
 		ht[off+h] = file_id;
@@ -391,9 +393,9 @@ void prepare_ht(void)
 	cout << "HT sizes: " << ht_size1 / (1<<20)*sizeof(file_id_t) + ht_size2 / (1<<20)*sizeof(file_id_t) << "MB\n";
 
 	ht1 = new file_id_t[ht_size1];
-	fill(ht1, ht1+ht_size1, -1);
+	fill(ht1, ht1+ht_size1, EMPTY);
 	ht2 = new file_id_t[ht_size2];
-	fill(ht2, ht2+ht_size2, -1);
+	fill(ht2, ht2+ht_size2, EMPTY);
 
 	// set counter of entries with hash value = 0
 	ht_zeros1 = new file_id_t[ht_slots1];
@@ -619,7 +621,7 @@ void parse_file(unsigned char * d)
 		if(match.second < HASH_LEN1 + HASH_STEP1 - 1)
 			match = find_match(d, pos, 2);
 		
-		if(match.first < 0)
+		if(match.first == EMPTY)
 		{
 			store_literal(d[pos]);
 			pos++;
