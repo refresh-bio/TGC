@@ -1,4 +1,5 @@
 # TGC - **T**housands **G**enome **C**ompressor
+[![Bioinformatics 29(20):2572](https://img.shields.io/badge/Bioinformatics%202013-10.1093/bioinformatics/btt460-blue)](https://academic.oup.com/bioinformatics/article/29/20/2572/278528) 
 
 Thousands Genome Compressor is a tool to estimate the boundaries of compression ratio for human genome compression. It can be also used as a very effective tool for compression Variant Call Format (VCF) files.
 
